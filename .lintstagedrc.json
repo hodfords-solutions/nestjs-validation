@@ -1,0 +1,3 @@
+{
+    "lib/**/*.ts": ["cspell", "eslint --fix --max-warnings 0"]
+}
