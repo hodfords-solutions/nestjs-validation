@@ -1,0 +1,22 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "words": [
+        "nestjs",
+        "diginexhk",
+        "metadatas",
+        "dtos",
+        "metatype",
+        "postbuild",
+        "hodfords",
+        "commitlint",
+        "classpath",
+        "dotenv",
+        "pids",
+        "diginex",
+        "typeorm",
+        "npmjs"
+    ],
+    "flagWords": ["hte"],
+    "ignorePaths": ["node_modules", "test", "*.spec.ts", "cspell.json", "dist"]
+}
