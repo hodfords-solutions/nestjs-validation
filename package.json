@@ -1,7 +1,7 @@
 {
   "name": "@hodfords/nestjs-validation",
-  "version": "1.0.0-rc.1",
-  "description": "",
+  "version": "10.0.0",
+  "description": "A utility for simplifying validation and providing translated error messages in NestJS applications",
   "main": "index.js",
   "scripts": {
     "prebuild": "rimraf dist",
@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/hodfords-solutions/nestjs-validation/issues"
   },
-  "homepage": "https://github.com/hodfords-solutions/nestjs-validation",
+  "homepage": "https://opensource.hodfords.uk/",
   "dependencies": {
     "rewire": "7.0.0"
   },
