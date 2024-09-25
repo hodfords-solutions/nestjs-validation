@@ -17,8 +17,8 @@ npm install @hodfords/nestjs-validation --save
 First, create an instance of ValidationPipe with the desired configuration:
 
 ```typescript
-import { ValidationPipe } from '@diginexhk/nestjs-validation-helper';
-import { ValidateException } from '@diginexhk/nestjs-exception';
+import { ValidationPipe } from '@hodfords/nestjs-validation';
+import { ValidateException } from '@hodfords/nestjs-exception';
 
 export const validateConfig = new ValidationPipe({
     whitelist: true,
