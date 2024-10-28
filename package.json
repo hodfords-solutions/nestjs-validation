@@ -1,6 +1,6 @@
 {
   "name": "@hodfords/nestjs-validation",
-  "version": "10.0.0",
+  "version": "10.0.1",
   "description": "A utility for simplifying validation and providing translated error messages in NestJS applications",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "@commitlint/cli": "19.5.0",
     "@commitlint/config-conventional": "19.5.0",
     "@grpc/grpc-js": "^1.11.3",
+    "@nestjs/cli": "10.4.5",
     "@hodfords/nestjs-eslint-config": "10.0.4",
     "@hodfords/nestjs-exception": "10.1.1",
     "@hodfords/nestjs-prettier-config": "10.0.1",
