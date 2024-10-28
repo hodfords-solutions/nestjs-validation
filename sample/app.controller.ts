@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AppDto } from './app.dto';
+import { AddRequestToBodyDto, AppDto } from './app.dto';
+import { AddRequestToBody } from '../lib/decorators/add-request-to-body.decorator';
 
 @Controller()
 export class AppController {
@@ -14,5 +15,11 @@ export class AppController {
     @Post()
     sayHello(@Body() dto: AppDto): string {
         return dto.stringValue;
+    }
+
+    @Put(':id')
+    @AddRequestToBody()
+    addRequestToBody(@Body() dto: AddRequestToBodyDto): AddRequestToBodyDto {
+        return dto;
     }
 }
