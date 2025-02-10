@@ -35,7 +35,7 @@ export class ValidationPipe extends BaseValidationPipe {
             return this.isTransformEnabled ? this.transformPrimitive(value, metadata) : value;
         }
         const originalValue = value;
-        value = this.toEmptyIfNil(value);
+        value = this.toEmptyIfNil(value, metatype);
 
         const isNil = value !== originalValue;
         const isPrimitive = this.isPrimitive(value);
