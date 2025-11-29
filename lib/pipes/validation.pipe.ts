@@ -6,23 +6,18 @@ import {
     ValidationPipeOptions
 } from '@nestjs/common';
 import { isObject } from '@nestjs/common/utils/shared.utils';
-import { getOverrideModule } from '../overrides/class-validation';
 import { ParentDto } from '../dtos/parent.dto';
 import { RequestDto } from '../dtos/request.dto';
 import { TRANSFORMER_EXCLUDE_KEY } from '../constants/transformer.constant';
-import { getMetadataStorage } from 'class-validator';
 
 @Injectable()
 export class ValidationPipe extends BaseValidationPipe {
     private classValidator: any;
     private classTransformer: any;
 
-    constructor(
-        @Optional() private options?: ValidationPipeOptions,
-        isTest: boolean = false
-    ) {
+    constructor(@Optional() private options?: ValidationPipeOptions) {
         super(options);
-        this.classValidator = !isTest ? getOverrideModule(getMetadataStorage()) : this.loadValidator();
+        this.classValidator = this.loadValidator();
         this.classTransformer = this.loadTransformer();
     }
 
@@ -35,7 +30,7 @@ export class ValidationPipe extends BaseValidationPipe {
             return this.isTransformEnabled ? this.transformPrimitive(value, metadata) : value;
         }
         const originalValue = value;
-        value = this.toEmptyIfNil(value);
+        value = this.toEmptyIfNil(value, metatype);
 
         const isNil = value !== originalValue;
         const isPrimitive = this.isPrimitive(value);
@@ -66,10 +61,6 @@ export class ValidationPipe extends BaseValidationPipe {
         return Object.keys(this.validatorOptions).length > 0
             ? this.classTransformer.classToPlain(entity, this.transformOptions)
             : value;
-    }
-
-    public clone(isTest: boolean = false): ValidationPipe {
-        return new ValidationPipe(this.options, isTest);
     }
 
     private removeRequestData(entity): any {

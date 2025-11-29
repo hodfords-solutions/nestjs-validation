@@ -1,40 +1,27 @@
-import rewire from 'rewire';
-import { MetadataStorageWrapper } from './metadata.storage';
-import { ValidationUtils } from './validation.util';
-import { MetadataStorage } from 'class-validator';
+import { ValidationUtils } from 'class-validator/cjs/validation/ValidationUtils.js';
 
-export function getRewireModule(): any {
-    // Issues: https://github.com/jhnns/rewire/issues/144
-    // Ref: https://github.com/jhnns/rewire/pull/149/files
-    const rewireRef = rewire('rewire');
-    const moduleEnvRef = rewire('rewire/lib/moduleEnv.js');
-
-    const jsExtension = moduleEnvRef.__get__('jsExtension');
-    moduleEnvRef.__set__('jsExtension', () => {
-        return function (module: any, filename: any) {
-            jsExtension(module, filename);
-        };
-    });
-    rewireRef.__set__('moduleEnv', moduleEnvRef);
-
-    return rewireRef;
+export function constraintToString(constraint: unknown): string {
+    if (Array.isArray(constraint)) {
+        return constraint.join(', ');
+    }
+    return `${constraint}`;
 }
 
-export function getOverrideModule(metadataStorage?: MetadataStorage): any {
-    const rewireRef = getRewireModule();
-    const moduleRef = rewireRef('class-validator');
+ValidationUtils.replaceMessageSpecialTokens = function (
+    message: string | ((args: any) => string),
+    validationArguments: any
+): any {
+    const detail: any = {
+        property: validationArguments.property,
+        target: validationArguments.targetName,
+        value: validationArguments.value
+    };
 
-    // Reverse validator executor
-    const storage = new MetadataStorageWrapper();
-    Object.assign(storage, metadataStorage ?? globalThis.classValidatorMetadataStorage);
-    moduleRef.__set__('MetadataStorage_1.getMetadataStorage', () => storage);
+    if (validationArguments.constraints instanceof Array) {
+        validationArguments.constraints.forEach((constraint: any, index: number) => {
+            detail[`constraint${index + 1}`] = constraintToString(constraint);
+        });
+    }
 
-    // Override custom key
-    const validationExecutorRef = rewireRef('class-validator/cjs/validation/ValidationExecutor.js');
-    const validatorRef = rewireRef('class-validator/cjs/validation/Validator.js');
-    validationExecutorRef.__set__('ValidationUtils_1.ValidationUtils', ValidationUtils);
-    validatorRef.__set__('ValidationExecutor_1', validationExecutorRef);
-    moduleRef.__set__('Validator_1', validatorRef);
-
-    return moduleRef;
-}
+    return { message, detail };
+};
