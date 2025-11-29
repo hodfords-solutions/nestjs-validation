@@ -33,6 +33,7 @@
     "@hodfords/nestjs-eslint-config": "11.0.2",
     "@hodfords/nestjs-exception": "11.0.2",
     "@hodfords/nestjs-prettier-config": "11.0.1",
+    "@hodfords/nestjs-cls-translation": "^11.1.0",
     "@nestjs/cli": "11.0.14",
     "@nestjs/common": "11.1.9",
     "@nestjs/core": "11.1.9",
@@ -50,8 +51,5 @@
     "rimraf": "6.1.2",
     "typeorm": "^0.3.27",
     "typescript": "5.9.3"
-  },
-  "dependencies": {
-    "@hodfords/nestjs-cls-translation": "^11.1.0"
   }
 }
