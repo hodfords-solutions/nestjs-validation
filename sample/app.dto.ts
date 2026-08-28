@@ -1,5 +1,5 @@
 import { IsString, ValidateIf } from 'class-validator';
-import { RequestDto } from '../lib/dtos/request.dto';
+import { RequestDto } from '../lib/dtos/request.dto.js';
 
 export class AppDto {
     @IsString()

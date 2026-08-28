@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { i18nConfig } from './configs/i18n.config';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { i18nConfig } from './configs/i18n.config.js';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from '@hodfords/nestjs-exception';
 

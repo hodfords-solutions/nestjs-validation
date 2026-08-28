@@ -6,6 +6,15 @@
 
 ## Installation 🤖
 
+> **ESM-only.** This package ships as native ESM (`"type": "module"`) and must be loaded with
+> `import` — `require()` is not supported. Requires **Node.js >= 20.19** (or >= 22.12 / >= 24.15 / >= 26)
+> and **NestJS 12**.
+
+| `@hodfords/nestjs-validation` | NestJS  | Node.js   | Module system |
+| ----------------------------- | ------- | --------- | ------------- |
+| `12.x`                        | `12.x`  | `>=20.19` | ESM only      |
+| `11.x`                        | `11.x`  | `>=18`    | CommonJS      |
+
 Install the `nestjs-validation` package with:
 
 ```bash
@@ -85,6 +94,17 @@ When combined with [nestjs-exception](https://www.npmjs.com/package/@hodfords/ne
     }
 }
 ```
+
+### NestJS 12 notes
+
+-   `ValidationPipe` overrides `transform()` entirely, so the new `errorFormat: 'list' | 'grouped'`
+    option of the built-in NestJS 12 pipe has **no effect** here. Error shaping stays under your
+    control through `exceptionFactory` (e.g. `@hodfords/nestjs-exception`'s `ValidateException`).
+-   `ArgumentMetadata` is now generic (`ArgumentMetadata<Metatype>`) and carries an optional
+    `schema` property. The default type argument is `any`, so existing pipes keep working unchanged.
+-   The new `StandardSchemaValidationPipe` and the `schema` option on `@Body()` / `@Query()` /
+    `@Param()` are an alternative, Zod/Valibot-style validation path. They are unrelated to this
+    package's `class-validator` based pipe and are not used here.
 
 ## License 📝
 

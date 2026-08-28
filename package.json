@@ -1,55 +1,81 @@
 {
-  "name": "@hodfords/nestjs-validation",
-  "version": "11.1.2",
-  "description": "A utility for simplifying validation and providing translated error messages in NestJS applications",
-  "main": "index.js",
-  "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "tsc",
-    "postbuild": "cp package.json dist/lib && cp README.md dist/lib && cp .npmrc dist/lib",
-    "prepare": "is-ci || husky",
-    "format": "prettier --write \"lib/**/*.ts\" \"sample/**/*.ts\"",
-    "cspell": "cspell",
-    "lint": "eslint \"lib/**/*.ts\" \"sample/**/*.ts\" --fix --max-warnings 0",
-    "lint-staged": "lint-staged",
-    "start": "nest start",
-    "start:dev": "npm run prebuild && nest start --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hodfords-solutions/nestjs-validation"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hodfords-solutions/nestjs-validation/issues"
-  },
-  "homepage": "https://opensource.hodfords.uk/",
-  "devDependencies": {
-    "@commitlint/cli": "20.4.1",
-    "@commitlint/config-conventional": "20.4.1",
-    "@grpc/grpc-js": "1.14.3",
-    "@hodfords/nestjs-eslint-config": "11.0.2",
-    "@hodfords/nestjs-exception": "11.0.2",
-    "@hodfords/nestjs-prettier-config": "11.0.1",
-    "@hodfords/nestjs-cls-translation": "11.1.0",
-    "@nestjs/cli": "11.0.16",
-    "@nestjs/common": "11.1.12",
-    "@nestjs/core": "11.1.12",
-    "@nestjs/platform-express": "11.1.12",
-    "@types/node": "25.2.0",
-    "class-transformer": "0.5.1",
-    "class-validator": "0.14.3",
-    "cspell": "9.6.3",
-    "eslint": "9.39.2",
-    "husky": "9.1.7",
-    "is-ci": "4.1.0",
-    "lint-staged": "16.2.7",
-    "lodash": "4.17.23",
-    "reflect-metadata": "0.2.2",
-    "rimraf": "6.1.2",
-    "typeorm": "0.3.28",
-    "typescript": "5.9.3"
-  }
+    "name": "@hodfords/nestjs-validation",
+    "version": "11.1.2",
+    "description": "A utility for simplifying validation and providing translated error messages in NestJS applications",
+    "type": "module",
+    "main": "./index.js",
+    "types": "./index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./index.js",
+            "default": "./index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "engines": {
+        "node": ">=20.19.0"
+    },
+    "scripts": {
+        "prebuild": "rimraf dist",
+        "build": "tsc",
+        "postbuild": "cp package.json dist/lib && cp README.md dist/lib && cp .npmrc dist/lib",
+        "prepare": "is-ci || husky",
+        "format": "prettier --write \"lib/**/*.ts\" \"sample/**/*.ts\"",
+        "cspell": "cspell",
+        "lint": "eslint \"lib/**/*.ts\" \"sample/**/*.ts\" --fix --max-warnings 0",
+        "lint-staged": "lint-staged",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:cov": "vitest run --coverage",
+        "start": "nest start",
+        "start:dev": "npm run prebuild && nest start --watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hodfords-solutions/nestjs-validation"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/hodfords-solutions/nestjs-validation/issues"
+    },
+    "homepage": "https://opensource.hodfords.uk/",
+    "devDependencies": {
+        "@commitlint/cli": "20.4.1",
+        "@commitlint/config-conventional": "20.4.1",
+        "@grpc/grpc-js": "1.14.3",
+        "@hodfords/nestjs-cls-translation": "11.1.0",
+        "@hodfords/nestjs-eslint-config": "11.0.2",
+        "@hodfords/nestjs-exception": "11.0.2",
+        "@hodfords/nestjs-prettier-config": "11.0.1",
+        "@nestjs/cli": "12.0.0",
+        "@nestjs/common": "12.0.1",
+        "@nestjs/core": "12.0.1",
+        "@nestjs/platform-express": "12.0.1",
+        "@nestjs/testing": "12.0.1",
+        "@swc/core": "^1.13.5",
+        "@types/node": "25.2.0",
+        "class-transformer": "0.5.1",
+        "class-validator": "0.14.3",
+        "cspell": "9.6.3",
+        "eslint": "9.39.2",
+        "husky": "9.1.7",
+        "is-ci": "4.1.0",
+        "lint-staged": "16.2.7",
+        "lodash": "4.17.23",
+        "reflect-metadata": "0.2.2",
+        "rimraf": "6.1.2",
+        "typeorm": "1.1.0",
+        "typescript": "5.9.3",
+        "unplugin-swc": "^1.5.7",
+        "vitest": "^4.1.10"
+    },
+    "overrides": {
+        "nestjs-cls": {
+            "@nestjs/common": "$@nestjs/common",
+            "@nestjs/core": "$@nestjs/core"
+        }
+    }
 }

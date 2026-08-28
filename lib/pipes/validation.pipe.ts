@@ -5,20 +5,22 @@ import {
     ValidationPipe as BaseValidationPipe,
     ValidationPipeOptions
 } from '@nestjs/common';
-import { isObject } from '@nestjs/common/utils/shared.utils';
-import { ParentDto } from '../dtos/parent.dto';
-import { RequestDto } from '../dtos/request.dto';
-import { TRANSFORMER_EXCLUDE_KEY } from '../constants/transformer.constant';
+import { TransformerPackage } from '@nestjs/common/interfaces/external/transformer-package.interface.js';
+import { ValidatorPackage } from '@nestjs/common/interfaces/external/validator-package.interface.js';
+import { isObject } from '@nestjs/common/utils/shared.utils.js';
+import { ParentDto } from '../dtos/parent.dto.js';
+import { RequestDto } from '../dtos/request.dto.js';
+import { TRANSFORMER_EXCLUDE_KEY } from '../constants/transformer.constant.js';
 
 @Injectable()
 export class ValidationPipe extends BaseValidationPipe {
-    private classValidator: any;
-    private classTransformer: any;
+    private classValidator: ValidatorPackage | Promise<ValidatorPackage>;
+    private classTransformer: TransformerPackage | Promise<TransformerPackage>;
 
     constructor(@Optional() private options?: ValidationPipeOptions) {
         super(options);
-        this.classValidator = this.loadValidator();
-        this.classTransformer = this.loadTransformer();
+        this.classValidator = this.loadValidator(options?.validatorPackage);
+        this.classTransformer = this.loadTransformer(options?.transformerPackage);
     }
 
     public async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
@@ -29,6 +31,12 @@ export class ValidationPipe extends BaseValidationPipe {
         if (!metatype || !this.toValidate(metadata)) {
             return this.isTransformEnabled ? this.transformPrimitive(value, metadata) : value;
         }
+
+        // NestJS 12 loads class-validator/class-transformer lazily via `import()`,
+        // so both packages have to be awaited before they can be used.
+        this.classValidator = await this.classValidator;
+        this.classTransformer = await this.classTransformer;
+
         const originalValue = value;
         value = this.toEmptyIfNil(value, metatype);
 
@@ -44,9 +52,13 @@ export class ValidationPipe extends BaseValidationPipe {
         } else if (isCtorNotEqual) {
             entity = { constructor: metatype };
         }
-        const errors = await this.classValidator.validate(entity, this.validatorOptions);
+        const errors = await (this.classValidator as ValidatorPackage).validate(entity, this.validatorOptions);
         if (errors.length > 0) {
             throw await this.exceptionFactory(errors);
+        }
+        if (originalValue === undefined && originalEntity === '') {
+            // SWC requires an empty string for validation, fall back to the original value.
+            return originalValue;
         }
         if (isPrimitive) {
             entity = originalEntity;
@@ -58,8 +70,10 @@ export class ValidationPipe extends BaseValidationPipe {
         if (isNil) {
             return originalValue;
         }
-        return Object.keys(this.validatorOptions).length > 0
-            ? this.classTransformer.classToPlain(entity, this.transformOptions)
+        // `forbidUnknownValues` is always injected into `validatorOptions` by NestJS 12,
+        // so the threshold is 1 instead of 0.
+        return Object.keys(this.validatorOptions).length > 1
+            ? (this.classTransformer as TransformerPackage).classToPlain(entity, this.transformOptions)
             : value;
     }
 
@@ -78,7 +92,11 @@ export class ValidationPipe extends BaseValidationPipe {
     }
 
     private plainToClass(metatype, value): any {
-        const entity = this.classTransformer.plainToClass(metatype, value, this.transformOptions);
+        const entity: any = (this.classTransformer as TransformerPackage).plainToInstance(
+            metatype,
+            value,
+            this.transformOptions
+        );
         this.addRequestToObject(entity, null, entity.requestDto);
         this.removeExcludedFields(entity, metatype);
 

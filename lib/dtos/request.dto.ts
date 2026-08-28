@@ -1,6 +1,6 @@
 import { IsOptional } from 'class-validator';
-import { ParentDto } from './parent.dto';
-import { RequestDtoType } from '../types/request-dto.type';
+import { ParentDto } from './parent.dto.js';
+import { RequestDtoType } from '../types/request-dto.type.js';
 
 export abstract class RequestDto extends ParentDto {
     @IsOptional()
