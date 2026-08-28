@@ -1,6 +1,6 @@
 {
     "name": "@hodfords/nestjs-validation",
-    "version": "12.0.1",
+    "version": "12.0.2",
     "description": "A utility for simplifying validation and providing translated error messages in NestJS applications",
     "type": "module",
     "main": "./index.js",
