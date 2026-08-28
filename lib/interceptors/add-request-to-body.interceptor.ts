@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { isObject } from '@nestjs/common/utils/shared.utils';
+import { isObject } from '@nestjs/common/utils/shared.utils.js';
 import { Observable } from 'rxjs';
 
 @Injectable()
