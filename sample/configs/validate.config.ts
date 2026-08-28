@@ -1,5 +1,5 @@
 import { ValidateException } from '@hodfords/nestjs-exception';
-import { ValidationPipe } from '@hodfords/nestjs-validation';
+import { ValidationPipe } from '../../lib/index.js';
 
 export const validateConfig = new ValidationPipe({
     whitelist: true,

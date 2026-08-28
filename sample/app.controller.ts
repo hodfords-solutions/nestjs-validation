@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Put } from '@nestjs/common';
-import { AppService } from './app.service';
-import { AddRequestToBodyDto, AppDto } from './app.dto';
-import { AddRequestToBody } from '../lib/decorators/add-request-to-body.decorator';
+import { AppService } from './app.service.js';
+import { AddRequestToBodyDto, AppDto } from './app.dto.js';
+import { AddRequestToBody } from '../lib/decorators/add-request-to-body.decorator.js';
 
 @Controller()
 export class AppController {
