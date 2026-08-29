@@ -34,3 +34,5 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 .env
+# TypeScript incremental build info (TS6 writes it next to tsconfig)
+*.tsbuildinfo
