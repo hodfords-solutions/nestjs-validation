@@ -9,7 +9,7 @@ export class AppDto {
 export class AddRequestToBodyDto extends RequestDto {
     @IsString()
     @ValidateIf((dto: AddRequestToBodyDto) => {
-        return !!dto.requestDto.params.id;
+        return !!dto.requestDto?.params.id;
     })
     stringValue: string;
 }

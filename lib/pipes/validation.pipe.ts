@@ -11,6 +11,7 @@ import { isObject } from '@nestjs/common/utils/shared.utils.js';
 import { ParentDto } from '../dtos/parent.dto.js';
 import { RequestDto } from '../dtos/request.dto.js';
 import { TRANSFORMER_EXCLUDE_KEY } from '../constants/transformer.constant.js';
+import { TransformerExcludeMetadata } from '../types/transformer-exclude-metadata.type.js';
 
 @Injectable()
 export class ValidationPipe extends BaseValidationPipe {
@@ -77,21 +78,22 @@ export class ValidationPipe extends BaseValidationPipe {
             : value;
     }
 
-    private removeRequestData(entity): any {
+    private removeRequestData(entity: unknown): void {
         if (Array.isArray(entity)) {
             for (const item of entity) {
                 this.removeRequestData(item);
             }
         } else if (isObject(entity)) {
-            delete entity['requestDto'];
-            delete entity['parentDto'];
-            for (const key in entity) {
-                this.removeRequestData(entity[key]);
+            const record = entity as Record<string, unknown>;
+            delete record['requestDto'];
+            delete record['parentDto'];
+            for (const key in record) {
+                this.removeRequestData(record[key]);
             }
         }
     }
 
-    private plainToClass(metatype, value): any {
+    private plainToClass(metatype: any, value: any): any {
         const entity: any = (this.classTransformer as TransformerPackage).plainToInstance(
             metatype,
             value,
@@ -103,7 +105,7 @@ export class ValidationPipe extends BaseValidationPipe {
         return entity;
     }
 
-    private addRequestToObject(entity, parent, request): any {
+    private addRequestToObject(entity: unknown, parent: unknown, request: unknown): void {
         if (Array.isArray(entity)) {
             for (const item of entity) {
                 this.addRequestToObject(item, entity, request);
@@ -115,27 +117,29 @@ export class ValidationPipe extends BaseValidationPipe {
             if (entity instanceof ParentDto) {
                 (entity as any).parentDto = parent;
             }
-            for (const key in entity) {
+            const record = entity as Record<string, unknown>;
+            for (const key in record) {
                 if (key !== 'parentDto' && key !== 'requestDto') {
-                    this.addRequestToObject(entity[key], entity, request);
+                    this.addRequestToObject(record[key], entity, request);
                 }
             }
         }
     }
 
-    private removeExcludedFields(entity, metatype): any {
+    private removeExcludedFields(entity: unknown, metatype: unknown): void {
         if (!metatype || !isObject(entity)) {
             return;
         }
 
-        const metadata = Reflect.getMetadata(TRANSFORMER_EXCLUDE_KEY, metatype) || [];
+        const metadata: TransformerExcludeMetadata[] = Reflect.getMetadata(TRANSFORMER_EXCLUDE_KEY, metatype) || [];
         const excludedFields = metadata.filter((item) => !item.condition(entity)).map((item) => item.propertyName);
+        const record = entity as Record<string, unknown>;
         for (const field of excludedFields) {
-            delete entity[field];
+            delete record[field];
         }
 
-        for (const key in entity) {
-            const value = entity[key];
+        for (const key in record) {
+            const value = record[key];
 
             if (['parentDto', 'requestDto'].includes(key)) {
                 continue;

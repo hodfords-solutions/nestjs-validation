@@ -1,6 +1,6 @@
 {
     "name": "@hodfords/nestjs-validation",
-    "version": "12.0.2",
+    "version": "12.1.0",
     "description": "A utility for simplifying validation and providing translated error messages in NestJS applications",
     "type": "module",
     "main": "./index.js",
@@ -17,7 +17,7 @@
         "node": ">=20.19.0"
     },
     "scripts": {
-        "prebuild": "rimraf dist",
+        "prebuild": "rimraf dist *.tsbuildinfo",
         "build": "tsc",
         "postbuild": "cp package.json dist/lib && cp README.md dist/lib && cp .npmrc dist/lib",
         "prepare": "is-ci || husky",
@@ -68,7 +68,7 @@
         "reflect-metadata": "0.2.2",
         "rimraf": "6.1.2",
         "typeorm": "1.1.0",
-        "typescript": "5.9.3",
+        "typescript": "6.0.3",
         "unplugin-swc": "^1.5.7",
         "vitest": "^4.1.10"
     },
