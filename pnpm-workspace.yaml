@@ -1,0 +1,7 @@
+overrides:
+    'nestjs-cls>@nestjs/common': '$@nestjs/common'
+    'nestjs-cls>@nestjs/core': '$@nestjs/core'
+
+allowBuilds:
+    '@swc/core': true
+    'protobufjs': true

@@ -18,5 +18,5 @@
         "npmjs"
     ],
     "flagWords": ["hte"],
-    "ignorePaths": ["node_modules", "test", "*.spec.ts", "cspell.json", "dist"]
+    "ignorePaths": ["node_modules", "test", "*.spec.ts", "cspell.json", "dist", "package-lock.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"]
 }
