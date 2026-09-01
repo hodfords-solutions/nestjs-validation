@@ -1,3 +1,3 @@
 changedFiles="$(git diff --name-only --cached)"
-npm run cspell --no-must-find-files ${changedFiles}
-npm run lint-staged
+pnpm run cspell --no-must-find-files ${changedFiles}
+pnpm run lint-staged
